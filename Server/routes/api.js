@@ -1,19 +1,14 @@
-const express = require('express');
-const axios = require('axios');
-const Search = require('../models/Search');
-const { ensureAuthenticated } = require('../middleware/auth');
+import express from "express";
+import axios from "axios";
+import Search from "../models/Search.model.js";
+import { ensureAuthenticated } from "../middleware/auth.js";
+
 const router = express.Router();
 
-// GET /api/top-searches
-router.get('/top-searches', ensureAuthenticated, async (req, res) => {
+router.get("/top-searches", ensureAuthenticated, async (req, res) => {
   try {
     const topSearches = await Search.aggregate([
-      {
-        $group: {
-          _id: '$term',
-          count: { $sum: 1 }
-        }
-      },
+      { $group: { _id: "$term", count: { $sum: 1 } } },
       { $sort: { count: -1 } },
       { $limit: 5 }
     ]);
@@ -25,29 +20,23 @@ router.get('/top-searches', ensureAuthenticated, async (req, res) => {
       }))
     });
   } catch (err) {
-    console.error('Error fetching top searches:', err);
-    res.status(500).json({ error: 'Failed to fetch top searches' });
+    console.error("Error fetching top searches:", err);
+    res.status(500).json({ error: "Failed to fetch top searches" });
   }
 });
 
-// POST /api/search
-router.post('/search', ensureAuthenticated, async (req, res) => {
+router.post("/search", ensureAuthenticated, async (req, res) => {
   try {
     const { term } = req.body;
 
-    if (!term || term.trim() === '') {
-      return res.status(400).json({ error: 'Search term is required' });
+    if (!term?.trim()) {
+      return res.status(400).json({ error: "Search term is required" });
     }
 
-    // Store search in database
-    await Search.create({
-      userId: req.user._id,
-      term: term.trim()
-    });
+    await Search.create({ userId: req.user._id, term: term.trim() });
 
-    // Fetch images from Unsplash
     const unsplashResponse = await axios.get(
-      'https://api.unsplash.com/search/photos',
+      "https://api.unsplash.com/search/photos",
       {
         params: {
           query: term,
@@ -66,30 +55,25 @@ router.post('/search', ensureAuthenticated, async (req, res) => {
       photographerUrl: img.user.links.html
     }));
 
-    res.json({
-      term,
-      count: images.length,
-      images
-    });
+    res.json({ term, count: images.length, images });
   } catch (err) {
-    console.error('Error performing search:', err);
-    res.status(500).json({ error: 'Search failed' });
+    console.error("Error performing search:", err);
+    res.status(500).json({ error: "Search failed" });
   }
 });
 
-// GET /api/history
-router.get('/history', ensureAuthenticated, async (req, res) => {
+router.get("/history", ensureAuthenticated, async (req, res) => {
   try {
     const history = await Search.find({ userId: req.user._id })
       .sort({ timestamp: -1 })
       .limit(20)
-      .select('term timestamp');
+      .select("term timestamp");
 
     res.json({ history });
   } catch (err) {
-    console.error('Error fetching history:', err);
-    res.status(500).json({ error: 'Failed to fetch history' });
+    console.error("Error fetching history:", err);
+    res.status(500).json({ error: "Failed to fetch history" });
   }
 });
 
-module.exports = router;
+export default router;

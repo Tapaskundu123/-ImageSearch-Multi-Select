@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   provider: {
     type: String,
     required: true,
-    enum: ['google', 'facebook', 'github']
+    enum: ["google", "facebook", "github"]
   },
   providerId: {
     type: String,
@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-// Compound index to ensure unique provider+providerId combinations
 userSchema.index({ provider: 1, providerId: 1 }, { unique: true });
 
-module.exports = mongoose.model('User', userSchema);
+export default mongoose.model("User", userSchema);

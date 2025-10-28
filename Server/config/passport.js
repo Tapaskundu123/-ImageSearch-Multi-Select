@@ -1,8 +1,8 @@
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const FacebookStrategy = require('passport-facebook').Strategy;
-const GitHubStrategy = require('passport-github2').Strategy;
-const User = require('../models/User');
+import passport from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { Strategy as FacebookStrategy } from "passport-facebook";
+import { Strategy as GitHubStrategy } from "passport-github2";
+import User from "../models/User.model.js";
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -23,22 +23,22 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: '/auth/google/callback'
+      callbackURL: "/auth/google/callback"
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
         let user = await User.findOne({
-          provider: 'google',
+          provider: "google",
           providerId: profile.id
         });
 
         if (!user) {
           user = await User.create({
-            provider: 'google',
+            provider: "google",
             providerId: profile.id,
-            email: profile.emails[0].value,
+            email: profile.emails[0]?.value || "",
             name: profile.displayName,
-            avatar: profile.photos[0].value
+            avatar: profile.photos[0]?.value || ""
           });
         }
 
@@ -56,26 +56,26 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
-      callbackURL: '/auth/facebook/callback',
-      profileFields: ['id', 'displayName', 'email', 'photos']
+      callbackURL: "/auth/facebook/callback",
+      profileFields: ["id", "displayName", "email", "photos"]
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
         let user = await User.findOne({
-          provider: 'facebook',
+          provider: "facebook",
           providerId: profile.id
         });
 
         if (!user) {
           user = await User.create({
-            provider: 'facebook',
+            provider: "facebook",
             providerId: profile.id,
-            email: profile.emails ? profile.emails[0].value : null,
+            email: profile.emails?.[0]?.value || null,
             name: profile.displayName,
-            avatar: profile.photos ? profile.photos[0].value : null
+            avatar: profile.photos?.[0]?.value || null
           });
         }
-
+ 
         done(null, user);
       } catch (err) {
         done(err, null);
@@ -90,22 +90,22 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: '/auth/github/callback'
+      callbackURL: "/auth/github/callback"
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
         let user = await User.findOne({
-          provider: 'github',
+          provider: "github",
           providerId: profile.id
         });
 
         if (!user) {
           user = await User.create({
-            provider: 'github',
+            provider: "github",
             providerId: profile.id,
-            email: profile.emails ? profile.emails[0].value : null,
+            email: profile.emails?.[0]?.value || null,
             name: profile.displayName || profile.username,
-            avatar: profile.photos ? profile.photos[0].value : null
+            avatar: profile.photos?.[0]?.value || null
           });
         }
 
@@ -117,4 +117,4 @@ passport.use(
   )
 );
 
-module.exports = passport;
+export default passport;
