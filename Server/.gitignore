@@ -1,0 +1,53 @@
+# Node modules
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# Env files
+.env
+.env.* 
+!.env.example
+
+# Build output
+dist/
+build/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Coverage testing
+coverage/
+
+# Cache
+.cache/
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.pid
+*.seed
+*.pid.lock
+
+# Jest
+jest*
+coverage/
+
+# VSCode settings folder
+.vscode/
+
+# Production extra files
+*.tgz
+
+# TypeScript build info (if using TS)
+*.tsbuildinfo
+
+# MongoDB local files (if accidentally created)
+*.local.db
