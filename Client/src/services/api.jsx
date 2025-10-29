@@ -12,9 +12,9 @@ export const authService = {
   logout: () => api.get('/auth/logout'),
 
   // ✅ OAuth Login (Redirect to backend)
-  googleLogin: () => { window.location.href = `${API_BASE}/auth/google`; },
-  facebookLogin: () => { window.location.href = `${API_BASE}/auth/facebook`; },
-  githubLogin: () => { window.location.href = `${API_BASE}/auth/github`; }
+  googleLogin: () =>`${API_BASE}/auth/google` ,
+  facebookLogin: () => `${API_BASE}/auth/facebook`,
+  githubLogin: () => `${API_BASE}/auth/github`
 };
 
 export const searchService = {

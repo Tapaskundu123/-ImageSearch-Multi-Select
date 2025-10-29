@@ -10,9 +10,9 @@ function App() {
 
   useEffect(() => {
     // ✅ Fix unwanted #_=_ from Facebook OAuth
-    if (window.location.hash === "#_=_") {
-      window.history.replaceState(null, null, window.location.pathname);
-    }
+    // if (window.location.hash === "#_=_") {
+    //   window.history.replaceState(null, null, window.location.pathname);
+    // }
 
     checkAuth();
   }, []);
