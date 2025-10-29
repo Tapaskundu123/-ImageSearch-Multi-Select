@@ -9,6 +9,11 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // ✅ Fix unwanted #_=_ from Facebook OAuth
+    if (window.location.hash === "#_=_") {
+      window.history.replaceState(null, null, window.location.pathname);
+    }
+
     checkAuth();
   }, []);
 
@@ -16,16 +21,15 @@ function App() {
     try {
       const response = await authService.getCurrentUser();
       setUser(response.data.user);
-    } 
-    catch (err) {
+    } catch (err) {
       setUser(null);
-    } 
-    finally {
+    } finally {
       setLoading(false);
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await authService.logout();
     setUser(null);
   };
 
@@ -41,7 +45,7 @@ function App() {
     <div className="App">
       {user ? (
         <Dashboard user={user} onLogout={handleLogout} />
-      ):(
+      ) : (
         <Login />
       )}
     </div>
