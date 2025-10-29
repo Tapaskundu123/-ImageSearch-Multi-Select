@@ -57,7 +57,7 @@ app.use("/auth", authRoutes);
 app.use("/api", apiRoutes);
 
 // 8. Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { searchService, authService } from '../services/api';
 import TopSearches from './TopSearches';
 import SearchBar from './SearchBar';

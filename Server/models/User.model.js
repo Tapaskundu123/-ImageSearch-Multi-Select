@@ -22,3 +22,4 @@ const userSchema = new mongoose.Schema({
 userSchema.index({ provider: 1, providerId: 1 }, { unique: true });
 
 export default mongoose.model("User", userSchema);
+

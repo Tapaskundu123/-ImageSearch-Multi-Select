@@ -4,7 +4,8 @@ import passport from "../config/passport.js";
 const router = express.Router();
 
 router.get("/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", { scope: ["profile", "email"]  // ✅ NEW: Forces account picker/consent screen
+   }),
 );
 
 router.get("/google/callback",

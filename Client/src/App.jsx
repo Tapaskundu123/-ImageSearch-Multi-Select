@@ -16,9 +16,11 @@ function App() {
     try {
       const response = await authService.getCurrentUser();
       setUser(response.data.user);
-    } catch (err) {
+    } 
+    catch (err) {
       setUser(null);
-    } finally {
+    } 
+    finally {
       setLoading(false);
     }
   };
@@ -39,7 +41,7 @@ function App() {
     <div className="App">
       {user ? (
         <Dashboard user={user} onLogout={handleLogout} />
-      ) : (
+      ):(
         <Login />
       )}
     </div>
