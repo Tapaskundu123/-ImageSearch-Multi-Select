@@ -23,6 +23,18 @@ app.use(
   })
 );
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  proxy: true,
+  cookie: {
+    secure: true,
+    httpOnly: true,
+    sameSite: "none"
+  }
+}));
+
 app.use(express.json());
 
 // 4. MongoDB
@@ -36,16 +48,6 @@ const connectDB = async () => {
   }
 };
 connectDB();
-
-// 5. Session
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 },
-  })
-);
 
 // 6. Passport — NOW SAFE TO INITIALIZE
 app.use(passport.initialize());

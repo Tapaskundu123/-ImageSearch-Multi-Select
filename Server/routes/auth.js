@@ -7,7 +7,6 @@ const router = express.Router();
 router.get("/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
-    prompt: "select_account" // Always show account picker
   })
 );
 
