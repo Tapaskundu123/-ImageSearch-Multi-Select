@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 const api = axios.create({
   baseURL: API_BASE,
@@ -10,11 +10,11 @@ const api = axios.create({
 export const authService = {
   getCurrentUser: () => api.get('/auth/user'),
   logout: () => api.get('/auth/logout'),
-  
-  // OAuth URLs
-  googleLogin: () => `${API_BASE}/auth/google`,
-  facebookLogin: () => `${API_BASE}/auth/facebook`,
-  githubLogin: () => `${API_BASE}/auth/github`
+
+  // ✅ OAuth Login (Redirect to backend)
+  googleLogin: () => { window.location.href = `${API_BASE}/auth/google`; },
+  facebookLogin: () => { window.location.href = `${API_BASE}/auth/facebook`; },
+  githubLogin: () => { window.location.href = `${API_BASE}/auth/github`; }
 };
 
 export const searchService = {
