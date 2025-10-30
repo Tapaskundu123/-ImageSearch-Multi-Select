@@ -37,9 +37,6 @@ const connectDB = async () => {
 };
 connectDB();
 
-// 5. Session
-const isProduction = process.env.NODE_ENV === "production";
-
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
